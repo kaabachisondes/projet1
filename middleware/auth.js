@@ -3,6 +3,7 @@ const jwt=require('jsonwebtoken');//importation de jsonwebtoken pour la verifica
 //les 3 variables :req: les donnees de requet clinet, res: donnes de reponse serveru, next: pour passer la route suivante si le token est valide
 
 module.exports=function(req,res,next){
+    // Bearer: on veut dire le porteur de token donc le serveur va comprendree le type d'auth
     // recuperation de token envoye par le client dans le header de la requete ,le token doit etre envoyé dans le format "Bearer"
     const authHeader=req.header("Authorization");
     //on va verifier si le token existe et commence par"Bearer" ,si ce n'est le cas ,in envoie une reponse d'erreur 401 (Unauthorized pour indiquer que l'acces eest refuse) 

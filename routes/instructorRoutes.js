@@ -4,7 +4,7 @@ const instructorController=require("../controllers/instructorController");
 
 router.post("/register",instructorController.register);
 router.post("/login",instructorController.login);
-router.get("/all",instructorController.getAllInstcructors);
+router.get("/all",instructorController.getAllInstructors);
 router.get("/:id",instructorController.getInstructorById)
 router.delete("/:id",instructorController.deleteInstructor);
 

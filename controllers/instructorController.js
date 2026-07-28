@@ -5,32 +5,42 @@ const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 
 // inscription d'un instructor
-exports.register=async(req,res)=>{
-    try{
-        console.log("body re:", req.body);
-        const{name,lastname,email,password,bio}=req.body;
-       console.log("email chercher:", email)
-        const existing = await Instructor.findOne({email});
-        // verifier si l'instructor existe deja
+exports.register = async (req, res) => {
+    try {
+        console.log("body reçu:", req.body);
 
-        if(existing){
-            return res.status(400).json({message:"Instructor already exists"});
+        const { name, lastname, email, password, bio } = req.body;
+
+        if (!name || !lastname || !email || !password) {
+            return res.status(400).json({ message: "Champs requis manquants" });
         }
-        const hashedPassword = await bcrypt.hash(password,10);
-        const instructor =new Instructor({
+
+        console.log("email cherché:", email);
+
+        const existing = await Instructor.findOne({ email });
+
+        if (existing) {
+            return res.status(400).json({ message: "Instructor already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const instructor = new Instructor({
             name,
             lastname,
             email,
-            password:hashedPassword,
+            password: hashedPassword,
             bio
         });
-        await instructor.save();
-        res.status(201).json({message:"Instructor registred successfully"});
-    }
-    catch(error){
-        res.status(500).json({message:"Server error"});
-    }
 
+        await instructor.save();
+
+        res.status(201).json({ message: "Instructor registered successfully" });
+
+    } catch (error) {
+        console.error("Erreur register:", error);   // ← affiche la vraie erreur dans le terminal backend
+        res.status(500).json({ message: "Server error", error: error.message }); // ← visible aussi côté navigateur en dev
+    }
 };
 //Login d'un instructor
 exports.login=async(req,res)=>{
@@ -65,7 +75,7 @@ exports.login=async(req,res)=>{
         // tandis que sans try et catch: si une erreur se produit ,elle peur faire planter l'application ou laisser l'application dans un etat incoherent
         // get all formateurs
         // get all formateurs
-    exports.getAllInstcructors = async (req, res) => {
+    exports.getAllInstructors = async (req, res) => {
         try{
             console.log("route pour tous les formateurs");
         const instructors = await Instructor.find();
